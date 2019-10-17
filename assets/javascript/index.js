@@ -1,65 +1,70 @@
 const topics = ['Fishing', 'Jack Russell', 'Poker', 'Dallas Cowboys', 'Houston Astros'];
-let newDiv = $("<div>");
-let newGif = $("<img>");
-const stillURL = [];
-const animaURL = [];
+
 
 $(document).ready(function () {
-
-    for (let i = 0; i < topics.length; i++) { //loop to create initial buttons
+    for (let i = 0; i < topics.length; i++) { //loop to create initial buttons shown in blue
         let el = topics[i];
         let btn = $("<button/>");
-        btn.attr("class", "btnTopic");
+        btn.attr("class", "btn btn-primary btnTopic");
         btn.text(el);
         $(".buttonsHolder").append(btn);
     }
-    $('.submit').on("click", function (event) { //event listener to submit new buttons
+
+    $('.submit').on("click", function (event) { //event listener to submit new buttons shown in green
         event.preventDefault();
         let btnTag = $(".search").val().trim();
-        topics.push(btnTag);
-        console.log(topics);
         let btn = $("<button/>");
-        btn.attr("class", "btnTopic");
+        btn.attr("class", "btn btn-success btnTopic");
         btn.text(btnTag);
-        $(".buttonsHolder").append(btn);
+        if (topics.includes(btnTag) === false){ // Prevents duplicates from being added
+            topics.push(btnTag);
+            //console.log(topics);
+            $(".buttonsHolder").append(btn);
+        }
+
     })
 
-    // $(".btnTopic").on("click", function (event) { //event listener to search
-    //     let value = $(this).text();
-    //     console.log(value);
-    //     $.get('http://api.giphy.com/v1/gifs/search?api_key=2yJcxO2SSW0acd5db0E5RwTgNNGSxIDa&limit=10&rating=g&q=' + value, function (data, status) {
-    //         console.log(data);
-    //     });
-    // })
-
-
     $(document).on("click", ".btnTopic", function (event) { //This code must be used because the button is not yet created during initial DOM creation.
-        event.preventDefault();
+        event.preventDefault(); //prevent execution
+        $(".gifHolder").empty(); // clear previous output
         let value = $(this).text();
-        $.get('http://api.giphy.com/v1/gifs/search?api_key=2yJcxO2SSW0acd5db0E5RwTgNNGSxIDa&limit=3&rating=g&q=' + value, function (data, status) {
-            //$(".gifHolder").empty();
-            for (let i = 0; i < 3; i++) { //load results in to array
-                let main = $('<div>');
-                let gifDiv = $('<div>');
+        $.get('http://api.giphy.com/v1/gifs/search?api_key=2yJcxO2SSW0acd5db0E5RwTgNNGSxIDa&limit=3&rating=g&q='
+            + value, function (data, status) {
+                for (let i = 0; i < 3; i++) { //load results in to array
+                    let main = $('<div class="row">'); //Set bootstrap row so that gifs can be added in column spacing
+                    let gifDiv = $('<div>');
+                    let newGif = $("<img>");
+                    const stillURL = [];
+                    const animaURL = [];
+                    stillURL[i] = data.data[i].images.fixed_height_still.url;
+                    animaURL[i] = data.data[i].images.fixed_height.url;
+                    stillURL[i] = stillURL[i].split('?')[0]; // API returns URL with a ? & truncate URL after the "?"
+                    animaURL[i] = animaURL[i].split('?')[0]; // API returns URL with a ? & truncate URL after the "?"
+                    newGif.attr('src', stillURL[i]);
+                    newGif.attr('gif-still', stillURL[i]);
+                    newGif.attr('gif-anima', animaURL[i]);
+                    newGif.attr('gif-state', 'still');
+                    newGif.attr('height', '350');
+                    newGif.addClass('col-md-4 gif'); // in bootstrap columns 3 wide
+                    gifDiv.append(newGif);
+                    main.append(gifDiv);
+                    $('.gifHolder').append(gifDiv);
 
-                stillURL[i] = data.data[i].images.fixed_height_still.url;
-                animaURL[i] = data.data[i].images.fixed_height.url;
-                console.log('stillURL', stillURL[i]);
-                console.log('animaURL', animaURL[i]);
-                newGif.attr('src', stillURL[i]);
-                newGif.attr('gif-still', stillURL[i]);
-                newGif.attr('gif-anima', animaURL[i]);
-                newGif.attr('gif-state', 'still');
-                newGif.addClass('gif');
-                //newDiv.append(newGif);
-                gifDiv.append(newGif);
-                main.append(gifDiv);
+                    $(".gif").on("click", function () { // this event listener needed to be moved within the ".get" scope in order to work.
+                        let state = '';
+                        state = $(this).attr("gif-state");
+                        if (state === "still") {
+                            $(this).attr('src', $(this).attr('gif-anima'));
+                            $(this).attr("gif-state", "animate");
+                            state = "animate";
+                        } else if (state === "animate") {
+                            $(this).attr('src', $(this).attr('gif-still'));
+                            $(this).attr("gif-state", "still");
+                        }
+                    });
+                }
 
-                $('.gifHolder').prepend(main);
-                console.log(newGif);
-            }
-
-        });
+            });
+            
     });
-
 });

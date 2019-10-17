@@ -9,13 +9,31 @@
         integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <title>GIFTastic</title>
 </head>
+
 <body>
-    <h1>GIFTastic</h1>
-    <div class='buttonsHolder'></div>
-    <form>
-        <input class='search'>
-        <button type='submit' class='submit'>Submit</button>
-    </form>
+    <div class='container'>
+        <div class='row'>
+            <div class=col-md-12>
+                <h1 align='center'>GIFTastic</h1>
+                <div align='center' class='buttonsHolder'></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline">
+                    <input class="form-control form-control-lg search" 
+                    type="text" 
+                    placeholder="Enter Gif Topic">
+                    <button type='submit' class='btn btn-primary submit' placeholder='Enter GIF search'>Submit</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        
+
+    </div>
+
+    
     <div class='gifHolder'></div>
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -26,4 +44,5 @@
         crossorigin="anonymous"></script>
     <script src="assets/javascript/index.js"></script>
 </body>
+
 </html>
