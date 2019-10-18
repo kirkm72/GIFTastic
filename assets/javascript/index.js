@@ -3,7 +3,7 @@ const topics = ['Fishing', 'Jack Russell', 'Poker', 'Dallas Cowboys', 'Houston A
 function genRand(lower, upper) {
     let rand = (Math.floor(Math.random() * upper + 1));
     if (rand <= lower) {
-        console.log("Random# is lower than input. Re-generating");
+        //console.log("Random# is lower than input. Re-generating");
         genRand(lower, upper);
     }
     return rand;
@@ -20,17 +20,16 @@ $(document).ready(function () {
 
     $('.submit').on("click", function (event) { //event listener to submit new buttons shown in DOM as green
         event.preventDefault();
-        if ($(".search").val().trim() !== '') {
-            let btnTag = $(".search").val().trim();
-        }
-
+        let btnTag = $(".search").val().trim();
         let btn = $("<button/>");
-        btn.attr("class", "btn btn-success btnTopic"); //btn-success in bootstrap renders green
+        btn.addClass("btn btn-success btnTopic"); //btn-success in bootstrap renders green
         btn.text(btnTag);
-        if (topics.includes(btnTag) === false) { // Prevents duplicates from being added
-            topics.push(btnTag);
-            console.log(topics);
-            $(".buttonsHolder").append(btn);
+        if (topics.includes(btnTag) === false) {// Prevents duplicates from being added
+            if (btnTag !== "") { // Prevents empty button from being added
+                topics.push(btnTag);
+                //console.log(topics);
+                $(".buttonsHolder").append(btn);
+            }
             $("#form").get(0).reset(); //native javascript: resets input form after submission
         }
 
