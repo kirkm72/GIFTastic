@@ -1,0 +1,12 @@
+body{
+    background: url(../images/topographic.png);
+    background-repeat: repeat;
+  }
+
+  #title{
+    color: blanchedalmond;
+  }
+  .form-container {
+    display: flex; /* Look into  */
+    justify-content: center; 
+  }
