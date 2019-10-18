@@ -39,7 +39,7 @@ $(document).ready(function () {
         let value = $(this).text();
         let offset = genRand(1, 20); //generate random number to feed in to API "offset" so that output is randomized
         //console.log(factor);
-        $.get("http://api.giphy.com/v1/gifs/search?api_key=2yJcxO2SSW0acd5db0E5RwTgNNGSxIDa&limit=3&rating=g&offset=" + offset + "&q="
+        $.get("https://api.giphy.com/v1/gifs/search?api_key=2yJcxO2SSW0acd5db0E5RwTgNNGSxIDa&limit=3&rating=g&offset=" + offset + "&q="
             + value, function (data, status) {
                 for (let i = 0; i < 3; i++) { //load results in to array
                     let main = $('<div class="row">'); //Set bootstrap row so that gifs can be added in column spacing
